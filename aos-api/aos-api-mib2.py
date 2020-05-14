@@ -36,16 +36,17 @@ for switch in switch_list:
 ##### Pull the NTP data from switch  #####
         headers= {'Accept': 'application/vnd.alcatellucentaos+json'}
         #ntp_result=switch_session.get('https://' + ip + '/mib/alaNtpPeerListTable?mibObject1=alaNtpPeerListAddress&mibObject2=alaNtpPeerListOffset', headers=headers)
-        ntp_result=switch_session.get('https://' + ip + '/mib/chasEntTemperatureTable?mibObject1=chasEntTempCurrent', headers=headers)
-        ntp_result_json=ntp_result.json()
-        print(ntp_result_json)
+        interface_result=switch_session.get('https://' + ip + '/mib/ifTable?mibObject1=ifPhysAddress', headers=headers)
+        interface_result_json=interface_result.json()
+        #print(interface_result)
         print("--------------------------------------------------------------------------------")
-        # for x in ntp_result_json['result']['data']['rows']:
-        #     print("")
-        #     print("Switch : "  + switch)
-        #     print ("NTP Server : " + ntp_result_json['result']['data']['rows'][x]['chasEntTempCurrent'])
-        #     print ("NTP offset : " + ntp_result_json['result']['data']['rows'][x]['chasEntTempThreshold'])
-        #     print("--------------------------------------------------------------------------------")
+        print("")
+        print("Switch : "  + switch)
+        #print(interface_result_json['result']['data']['rows'])
+        for x in interface_result_json['result']['data']['rows']:
+            print("")
+            print ("Port : " + x + " MAC-ADDRESS  -->  " + interface_result_json['result']['data']['rows'][x]['ifPhysAddress'])
+        print("--------------------------------------------------------------------------------")
         switch_session.cookies.clear()
         switch_session.close()
 print("")
