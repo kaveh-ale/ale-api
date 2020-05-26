@@ -1,4 +1,4 @@
-########  Example of Alcatel-Lucent Enterprise AOS API , Domain = MIB , Read All switch port MACs##################
+########  Example of Alcatel-Lucent Enterprise AOS API , Domain = MIB , Craete a VLAN and Verify##################
 ########  Version 1.0                                                                                          ##################
 ########  Author: Kaveh Majidi , SE Team
 
@@ -19,6 +19,7 @@ for switch in switch_list:
     ip=switch_list[switch]['ip']
     username=switch_list[switch]['username']
     password=switch_list[switch]['password']
+    name=switch_list[switch]['name']
 
 ##### Creating a Switch Session for switch and check the response  #####
     switch_session=requests.Session()
@@ -33,19 +34,26 @@ for switch in switch_list:
          print("Error ! Login/Connection failed for " + switch + " Please check your credentials or verify connection")
          print("")
     else:
-##### Pull the interface MAC data from switch  #####
+##### Push the data to switch  #####
+        #####  Create a New VLAN ######
         headers= {'Accept': 'application/vnd.alcatellucentaos+json'}
-        #ntp_result=switch_session.get('https://' + ip + '/mib/alaNtpPeerListTable?mibObject1=alaNtpPeerListAddress&mibObject2=alaNtpPeerListOffset', headers=headers)
-        interface_result=switch_session.get('https://' + ip + '/mib/ifTable?mibObject1=ifPhysAddress', headers=headers)
-        interface_result_json=interface_result.json()
-        #print(interface_result)
+        parameters={}
+        parameters['mibObject1']='vlanNumber:7'
+        parameters['mibObject0']='vlanDescription:voice-vlan'
+        vlan_create_result=switch_session.post('https://' + ip + '/mib/vlanTable?', data=parameters, headers=headers)
+
+        #####  Read  VLAN Data######
+        headers= {'Accept': 'application/vnd.alcatellucentaos+json'}
+        parameters = {'mibObject0':'vlanDescription'}
+        vlan_read_result=switch_session.get('https://' + ip + '/mib/vlanTable?',params=parameters, headers=headers)
+        vlan_read_result_json=vlan_read_result.json()
         print("--------------------------------------------------------------------------------")
         print("")
         print("Switch : "  + switch)
-        #print(interface_result_json['result']['data']['rows'])
-        for x in interface_result_json['result']['data']['rows']:
+        #print(vlan_read_result_json['result']['data']['rows'])
+        for x in vlan_read_result_json['result']['data']['rows']:
             print("")
-            print ("Port : " + x + " MAC-ADDRESS  -->  " + interface_result_json['result']['data']['rows'][x]['ifPhysAddress'])
+            print ("Vlan : " + x + " Description  -->  " + vlan_read_result_json['result']['data']['rows'][x]['vlanDescription'])
         print("--------------------------------------------------------------------------------")
         switch_session.cookies.clear()
         switch_session.close()
