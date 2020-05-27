@@ -1,7 +1,7 @@
 ########  Example of Alcatel-Lucent Enterprise AOS API , Domain = MIB , Read All switch port MACs##################
 ########  Version 1.0                                                                                          ##################
 ########  Author: Kaveh Majidi , SE Team
-
+######## Example of connecting to switch using MIB API and pull all ports MACs
 import requests
 import yaml
 import urllib3

@@ -1,7 +1,7 @@
 ########  Example of Alcatel-Lucent Enterprise AOS API , Domain = MIB ##################
 ########  Version 1.0                                                                                          ##################
 ########  Author: Kaveh Majidi , SE Team
-
+######## Example of connecting to switch using MIB API and pull NTP information
 import requests
 import yaml
 import urllib3

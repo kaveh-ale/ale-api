@@ -1,7 +1,7 @@
 ########  Example of Alcatel-Lucent Enterprise AOS API , Domain = MIB , Craete a VLAN and Verify##################
 ########  Version 1.0                                                                                          ##################
 ########  Author: Kaveh Majidi , SE Team
-######## Example of connecting to switch using MIB API and pull VLANs and Descriptions
+######## Example of connecting to switch using MIB API pull IP interface information
 import requests
 import yaml
 import urllib3
@@ -38,23 +38,27 @@ for switch in switch_list:
         #####  Create a New VLAN ######
         headers= {'Accept': 'application/vnd.alcatellucentaos+json'}
         parameters={}
-        parameters['mibObject1']='vlanNumber:7'
-        parameters['mibObject0']='vlanDescription:voice-vlan'
-        vlan_create_result=switch_session.post('https://' + ip + '/mib/vlanTable?', data=parameters, headers=headers)
-
-        #####  Read  VLAN Data######
-        headers= {'Accept': 'application/vnd.alcatellucentaos+json'}
-        parameters = {'mibObject0':'vlanDescription'}
-        vlan_read_result=switch_session.get('https://' + ip + '/mib/vlanTable?',params=parameters, headers=headers)
-        vlan_read_result_json=vlan_read_result.json()
-        print("--------------------------------------------------------------------------------")
-        print("")
-        print("Switch : "  + switch)
-        #print(vlan_read_result_json['result']['data']['rows'])
-        for x in vlan_read_result_json['result']['data']['rows']:
-            print("")
-            print ("Vlan : " + x + " Description  -->  " + vlan_read_result_json['result']['data']['rows'][x]['vlanDescription'])
-        print("--------------------------------------------------------------------------------")
+        parameters['mibObject0']='alaIpInterfaceName:vl-33'
+        parameters['mibObject1']='alaIpInterfaceAddress:10.255.2.2'
+        parameters['mibObject2']='alaIpInterfaceMask:255.255.255.0'
+        #parameters['mibObject3']='alaIpInterfaceMask:10.255.2.2'
+        #parameters['mibObject4']='alaIpInterfaceAddress:10.255.2.2'
+        vlan_create_result=switch_session.post('https://' + ip + '/mib/alaIpInterfaceTable?', data=parameters, headers=headers)
+        print(vlan_create_result)
+        # #####  Read  VLAN Data######
+        # headers= {'Accept': 'application/vnd.alcatellucentaos+json'}
+        # parameters = {'mibObject0':'alaIpInterfaceName'}
+        # vlan_read_result=switch_session.get('https://' + ip + '/mib/alaIpInterfaceTable?',params=parameters, headers=headers)
+        # vlan_read_result_json=vlan_read_result.json()
+        # print(vlan_read_result_json)
+        # # print("--------------------------------------------------------------------------------")
+        # # print("")
+        # # print("Switch : "  + switch)
+        # # #print(vlan_read_result_json['result']['data']['rows'])
+        # # for x in vlan_read_result_json['result']['data']['rows']:
+        # #     print("")
+        # #     print ("Vlan : " + x + " Description  -->  " + vlan_read_result_json['result']['data']['rows'][x]['vlanDescription'])
+        # # print("--------------------------------------------------------------------------------")
         switch_session.cookies.clear()
         switch_session.close()
 print("")

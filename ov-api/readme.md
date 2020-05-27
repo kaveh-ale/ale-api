@@ -1,12 +1,13 @@
 # Project
 
-ALE AOS-API Examples
-Developed by Kaveh Majidi @ ALE
-
+ALE OV-API Examples
+Developed or revised by Kaveh Majidi @ ALE
 Some Examples on how to use AOS API with Python
 
 # Credits
+
 Brian Witt @ ALE
+Jorge Arasanz  @ ALE
 
 # Version
 

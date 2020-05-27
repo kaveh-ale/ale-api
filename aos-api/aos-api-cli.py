@@ -1,7 +1,7 @@
 ########  Example of Alcatel-Lucent Enterprise AOS API , Domain = CLI ##################
 ########  Version 1.0                                                                                          ##################
 ########  Author: Kaveh Majidi , SE Team
-
+######## Example of connecting to switch using CLI API and pull VLAN table
 import requests
 import yaml
 import urllib3
