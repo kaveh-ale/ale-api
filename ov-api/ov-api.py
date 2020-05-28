@@ -1,8 +1,8 @@
-########  Example of Alcatel-Lucent Enterprise OV API , using /api   ##################
-########  Version 1.0                                                                                   ### ###############
-########  Author: Kaveh Majidi , SE Team                                               ### ###############
-######## Forked from ov-api example from Jorge Arasanz  @ ALE   ### ###############
-######## An Example to show how to connect to OV and pull all VLANs in OV ###########
+########  Example of Alcatel-Lucent Enterprise OV API , using /api
+########  Version 1.0
+########  Author: Kaveh Majidi , SE Team
+######## Forked from ov-api example from Jorge Arasanz  @ ALE
+######## An Example to show how to connect to OV and pull all VLANs in OV
 
 import requests
 import yaml

@@ -6,7 +6,7 @@ Some Examples on how to use AOS API with Python
 
 # Credits
 
-Brian Witt @ ALE
+Brian Witt @ ALE,
 Jorge Arasanz  @ ALE
 
 # Version

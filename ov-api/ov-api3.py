@@ -1,8 +1,8 @@
-########  Example of Alcatel-Lucent Enterprise OV API , using /api  and /rest-api
+########  Example of Alcatel-Lucent Enterprise OV API , using /api  and /rest-api  oAuth2 method
 ########  Version 1.0
 ########  Author: Kaveh Majidi , SE Team
 ######## Credit: Brian Witt  @ ALE
-######## An Example to show how to connect to OV and pull all Devices-using Cookie
+######## An example on how to connect to OV and pull all Devices using oAuth2
 
 import requests
 import yaml
@@ -41,23 +41,23 @@ if login_response != "login.success":
     print("Error ! Login/Connection failed for OV @ " + ip + " Please check your credentials or verify connection")
     print("")
 else:
-    # Get all devices from OV
+    access_token= login_response=api_response_json['accessToken']
+    # Get all devices from OV using access token
     api_url="https://" + ip + "/rest-api"
     api_domain="/devices"
-    api_request=requests.Request('GET', api_url + api_domain, headers=headers)
+    api_call_headers = {'Authorization': 'Bearer ' + access_token}
+    api_request=requests.Request('GET', api_url + api_domain, headers=api_call_headers)
     api_response = ov_session.send(ov_session.prepare_request(api_request), verify=False)
     api_response_json=api_response.json()
     response_status=api_response_json['status']
-    #print(response_status)
-    #print(api_response_json)
     if response_status != "SUCCESS":
-            print("")
-            print("Error in getting requested data, please check your query. Response Code: " + response_code)
-            print("")
+         print("")
+         print("Error in getting requested data, please check your query. Response Code: " + response_code)
+         print("")
     else:
-        for device in api_response_json['response']:
-            print ("Device ID -->" + device['deviceId'] + " IP -->  " + device['ipAddress']  + " MAC -->  " + device['macAddress'] )
-        print("--------------------------------------------------------------------------------")
+     for device in api_response_json['response']:
+         print ("Device ID -->" + device['deviceId'] + " IP -->  " + device['ipAddress']  + " MAC -->  " + device['macAddress'] )
+     print("--------------------------------------------------------------------------------")
 
 # Logout of Omnivista
 api_domain="/logout"
