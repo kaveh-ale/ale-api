@@ -34,31 +34,19 @@ for switch in switch_list:
          print("Error ! Login/Connection failed for " + switch + " Please check your credentials or verify connection")
          print("")
     else:
-##### Push the data to switch  #####
-        #####  Create a New VLAN ######
+        #####  Read  Interface Data######
         headers= {'Accept': 'application/vnd.alcatellucentaos+json'}
-        parameters={}
-        parameters['mibObject0']='alaIpInterfaceName:vl-33'
-        parameters['mibObject1']='alaIpInterfaceAddress:10.255.2.2'
-        parameters['mibObject2']='alaIpInterfaceMask:255.255.255.0'
-        #parameters['mibObject3']='alaIpInterfaceMask:10.255.2.2'
-        #parameters['mibObject4']='alaIpInterfaceAddress:10.255.2.2'
-        vlan_create_result=switch_session.post('https://' + ip + '/mib/alaIpInterfaceTable?', data=parameters, headers=headers)
-        print(vlan_create_result)
-        # #####  Read  VLAN Data######
-        # headers= {'Accept': 'application/vnd.alcatellucentaos+json'}
-        # parameters = {'mibObject0':'alaIpInterfaceName'}
-        # vlan_read_result=switch_session.get('https://' + ip + '/mib/alaIpInterfaceTable?',params=parameters, headers=headers)
-        # vlan_read_result_json=vlan_read_result.json()
-        # print(vlan_read_result_json)
-        # # print("--------------------------------------------------------------------------------")
-        # # print("")
-        # # print("Switch : "  + switch)
-        # # #print(vlan_read_result_json['result']['data']['rows'])
-        # # for x in vlan_read_result_json['result']['data']['rows']:
-        # #     print("")
-        # #     print ("Vlan : " + x + " Description  -->  " + vlan_read_result_json['result']['data']['rows'][x]['vlanDescription'])
-        # # print("--------------------------------------------------------------------------------")
+        interface_read_result=switch_session.get('https://' + ip + '/mib/alaIpInterfaceTable?&mibObject0=alaIpInterfaceName&mibObject1=alaIpInterfaceAddress', headers=headers)
+        interface_read_result_json=interface_read_result.json()
+        #print(interface_read_result_json)
+        print("--------------------------------------------------------------------------------")
+        print("")
+        print("Switch : "  + switch)
+        #print(vlan_read_result_json['result']['data']['rows'])
+        for x in interface_read_result_json['result']['data']['rows']:
+             print("")
+             print ("IP interface : " + x + " Name  -->  " + interface_read_result_json['result']['data']['rows'][x]['alaIpInterfaceName'] + " IP  -->  " + interface_read_result_json['result']['data']['rows'][x]['alaIpInterfaceAddress'])
+        print("--------------------------------------------------------------------------------")
         switch_session.cookies.clear()
         switch_session.close()
 print("")

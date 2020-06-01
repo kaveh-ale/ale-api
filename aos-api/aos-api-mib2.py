@@ -35,7 +35,6 @@ for switch in switch_list:
     else:
 ##### Pull the interface MAC data from switch  #####
         headers= {'Accept': 'application/vnd.alcatellucentaos+json'}
-        #ntp_result=switch_session.get('https://' + ip + '/mib/alaNtpPeerListTable?mibObject1=alaNtpPeerListAddress&mibObject2=alaNtpPeerListOffset', headers=headers)
         interface_result=switch_session.get('https://' + ip + '/mib/ifTable?mibObject1=ifPhysAddress', headers=headers)
         interface_result_json=interface_result.json()
         #print(interface_result)
