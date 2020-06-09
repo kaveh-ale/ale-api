@@ -1,7 +1,7 @@
-########  Example of Alcatel-Lucent Enterprise AOS API , Domain = MIB , Craete a VLAN and Verify##################
+########  Example of Alcatel-Lucent Enterprise AOS API , Domain = CLI ##################
 ########  Version 1.0                                                                                          ##################
 ########  Author: Kaveh Majidi , SE Team
-######## Example of connecting to switch using MIB API pull IP interface information
+######## Example of connecting to switch using CLI API and create a VLAN
 import requests
 import yaml
 import urllib3
@@ -15,12 +15,11 @@ with open('switch_list.yaml') as file:
 
 ##### Starting a loop to perform the following on each switch  #####
 print("##########        Operation Started.........  #############")
-print(" Example of connecting to switch using MIB API pull IP interface information")
+print("Example of connecting to switch using CLI API and Creating  a VLAN")
 for switch in switch_list:
     ip=switch_list[switch]['ip']
     username=switch_list[switch]['username']
     password=switch_list[switch]['password']
-    name=switch_list[switch]['name']
 
 ##### Creating a Switch Session for switch and check the response  #####
     switch_session=requests.Session()
@@ -35,19 +34,14 @@ for switch in switch_list:
          print("Error ! Login/Connection failed for " + switch + " Please check your credentials or verify connection")
          print("")
     else:
-        #####  Read  Interface Data######
+##### Pull the vlan table from switch  #####
         headers= {'Accept': 'application/vnd.alcatellucentaos+json'}
-        interface_read_result=switch_session.get('https://' + ip + '/mib/alaIpInterfaceTable?&mibObject0=alaIpInterfaceName&mibObject1=alaIpInterfaceAddress', headers=headers)
-        interface_read_result_json=interface_read_result.json()
-        #print(interface_read_result_json)
-        print("--------------------------------------------------------------------------------")
+        vlan_id="99"
+        vlan_result=switch_session.put('https://' + ip + '/cli/aos?&cmd=vlan+'+vlan_id, headers=headers)
+        vlan_result_json=vlan_result.json()
         print("")
-        print("Switch : "  + switch)
-        #print(vlan_read_result_json['result']['data']['rows'])
-        for x in interface_read_result_json['result']['data']['rows']:
-             print("")
-             print ("IP interface : " + x + " Name  -->  " + interface_read_result_json['result']['data']['rows'][x]['alaIpInterfaceName'] + " IP  -->  " + interface_read_result_json['result']['data']['rows'][x]['alaIpInterfaceAddress'])
-        print("--------------------------------------------------------------------------------")
+        print("_____________VLAN " + vlan_id + "created on  "  +  switch  + " ________________________")
+        print("____________________________________________________________________")
         switch_session.cookies.clear()
         switch_session.close()
 print("")

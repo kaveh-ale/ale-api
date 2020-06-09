@@ -1,7 +1,7 @@
 ########  Example of Alcatel-Lucent Enterprise AOS API , Domain = MIB , Craete a VLAN and Verify##################
 ########  Version 1.0                                                                                          ##################
 ########  Author: Kaveh Majidi , SE Team
-######## Example of connecting to switch using MIB API and pull VLANs and Descriptions
+######## Example of connecting to switch using MIB API and create a VLAN with Descriptions
 import requests
 import yaml
 import urllib3
@@ -15,6 +15,7 @@ with open('switch_list.yaml') as file:
 
 ##### Starting a loop to perform the following on each switch  #####
 print("##########        Operation Started.........  #############")
+print("Example of connecting to switch using MIB API and create a VLAN with Descriptions")
 for switch in switch_list:
     ip=switch_list[switch]['ip']
     username=switch_list[switch]['username']
@@ -50,7 +51,7 @@ for switch in switch_list:
         print("--------------------------------------------------------------------------------")
         print("")
         print("Switch : "  + switch)
-        #print(vlan_read_result_json['result']['data']['rows'])
+        print(vlan_read_result_json['result']['data']['rows'])
         for x in vlan_read_result_json['result']['data']['rows']:
             print("")
             print ("Vlan : " + x + " Description  -->  " + vlan_read_result_json['result']['data']['rows'][x]['vlanDescription'])

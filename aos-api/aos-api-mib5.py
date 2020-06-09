@@ -1,7 +1,8 @@
-########  Example of Alcatel-Lucent Enterprise AOS API , Domain = MIB , Craete a VLAN and Verify##################
-########  Version 1.0                                                                                          ##################
+########  Example of Alcatel-Lucent Enterprise AOS API , Domain = MIB , Show Linkaggs
+########  Version 1.0
 ########  Author: Kaveh Majidi , SE Team
-######## Example of connecting to switch using MIB API pull IP interface information
+######## Example of connecting to switch using MIB API and pull Linkagg information
+
 import requests
 import yaml
 import urllib3
@@ -15,7 +16,7 @@ with open('switch_list.yaml') as file:
 
 ##### Starting a loop to perform the following on each switch  #####
 print("##########        Operation Started.........  #############")
-print(" Example of connecting to switch using MIB API pull IP interface information")
+print("Example of connecting to switch using MIB API and pull Linkagg information")
 for switch in switch_list:
     ip=switch_list[switch]['ip']
     username=switch_list[switch]['username']
@@ -35,20 +36,48 @@ for switch in switch_list:
          print("Error ! Login/Connection failed for " + switch + " Please check your credentials or verify connection")
          print("")
     else:
-        #####  Read  Interface Data######
+        #####  Read Linkagg Data######
         headers= {'Accept': 'application/vnd.alcatellucentaos+json'}
-        interface_read_result=switch_session.get('https://' + ip + '/mib/alaIpInterfaceTable?&mibObject0=alaIpInterfaceName&mibObject1=alaIpInterfaceAddress', headers=headers)
-        interface_read_result_json=interface_read_result.json()
-        #print(interface_read_result_json)
+        linkagg_read_result=switch_session.get('https://' + ip + '/mib/alclnkaggAggTable?&mibObject0=alclnkaggAggNumber&mibObject1=alclnkaggAggLacpType&mibObject2=alclnkaggAggAdminState', headers=headers)
+        linkagg_read_result_json=linkagg_read_result.json()
+        print(linkagg_read_result_json)
         print("--------------------------------------------------------------------------------")
         print("")
         print("Switch : "  + switch)
-        #print(vlan_read_result_json['result']['data']['rows'])
-        for x in interface_read_result_json['result']['data']['rows']:
+        for x in linkagg_read_result_json['result']['data']['rows']:
              print("")
-             print ("IP interface : " + x + " Name  -->  " + interface_read_result_json['result']['data']['rows'][x]['alaIpInterfaceName'] + " IP  -->  " + interface_read_result_json['result']['data']['rows'][x]['alaIpInterfaceAddress'])
+             print ("Linkagg ID : "  + linkagg_read_result_json['result']['data']['rows'][x]['alclnkaggAggNumber'] + " Type  -->  " + linkagg_read_result_json['result']['data']['rows'][x]['alclnkaggAggLacpType'])
         print("--------------------------------------------------------------------------------")
         switch_session.cookies.clear()
         switch_session.close()
 print("")
 print("##########        Operation Completed       ##########")
+
+'''' Available MIB objects
+alclnkaggAggTable
+    alclnkAggSize
+    alclnkaggAggNumber
+    alclnkaggAggDescr
+    alclnkaggAggName
+    alclnkaggAggLacpType
+    alclnkaggAggAdminState
+    alclnkaggAggOperState
+    alclnkaggAggNbrSelectedPorts
+    alclnkaggAggNbrAttachedPorts
+    alclnkaggPrimaryPortIndex
+    alclnkaggAggMACAddress
+    alclnkaggAggActorSystemPriority
+    alclnkaggAggActorSystemID
+    alclnkaggAggPartnerAdminKey
+    alclnkaggAggActorAdminKey
+    alclnkaggAggActorOperKey
+    alclnkAggLocalRangeOperMin
+    alclnkAggLocalRangeOperMax
+    alclnkAggLocalRangeConfiguredMin
+    alclnkAggLocalRangeConfiguredMax
+    alclnkAggPeerRangeOperMin
+    alclnkAggPeerRangeOperMax
+    alclnkaggAggPartnerSystemID
+    alclnkaggAggPartnerSystemPriority
+    alclnkaggAggPartnerOperKey
+'''

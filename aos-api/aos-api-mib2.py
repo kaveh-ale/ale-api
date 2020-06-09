@@ -15,6 +15,7 @@ with open('switch_list.yaml') as file:
 
 ##### Starting a loop to perform the following on each switch  #####
 print("##########        Operation Started.........  #############")
+print("Example of connecting to switch using MIB API and pull all ports MACs")
 for switch in switch_list:
     ip=switch_list[switch]['ip']
     username=switch_list[switch]['username']

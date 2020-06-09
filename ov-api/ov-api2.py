@@ -2,7 +2,7 @@
 ########  Version 1.0
 ########  Author: Kaveh Majidi , SE Team
 ######## Credit: Brian Witt  @ ALE
-######## An Example to show how to connect to OV and pull all Devices-using Cookie
+######## An Example to show how to connect to OV and pull all Device IDs -using Cookie
 
 import requests
 import yaml
@@ -19,6 +19,7 @@ for ov in ov_list:
     password=ov_list[ov]['password']
 
 print("##########        Operation Started.........  #############")
+print("An Example to show how to connect to OV and pull all Devices IDs -using Cookie")
 print("")
 # Defining all API requirements
 ov_session=requests.Session()

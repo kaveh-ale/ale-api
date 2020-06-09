@@ -1,7 +1,7 @@
-########  Example of Alcatel-Lucent Enterprise AOS API , Domain = MIB ##################
+########  Example of Alcatel-Lucent Enterprise AOS API , Domain = CLI ##################
 ########  Version 1.0                                                                                          ##################
 ########  Author: Kaveh Majidi , SE Team
-######## Example of connecting to switch using MIB API and pull NTP information
+######## Example of connecting to switch using CLI API and pull VLAN table
 import requests
 import yaml
 import urllib3
@@ -15,6 +15,7 @@ with open('switch_list.yaml') as file:
 
 ##### Starting a loop to perform the following on each switch  #####
 print("##########        Operation Started.........  #############")
+print("Example of connecting to switch using CLI API and pull VLAN table")
 for switch in switch_list:
     ip=switch_list[switch]['ip']
     username=switch_list[switch]['username']
@@ -33,17 +34,14 @@ for switch in switch_list:
          print("Error ! Login/Connection failed for " + switch + " Please check your credentials or verify connection")
          print("")
     else:
-##### Pull the NTP data from switch  #####
+##### Pull the vlan table from switch  #####
         headers= {'Accept': 'application/vnd.alcatellucentaos+json'}
-        ntp_result=switch_session.get('https://' + ip + '/mib/alaNtpPeerListTable?mibObject1=alaNtpPeerListAddress&mibObject2=alaNtpPeerListOffset', headers=headers)
-        ntp_result_json=ntp_result.json()
-        print("--------------------------------------------------------------------------------")
-        for x in ntp_result_json['result']['data']['rows']:
-            print("")
-            print("Switch : "  + switch)
-            print ("NTP Server : " + ntp_result_json['result']['data']['rows'][x]['alaNtpPeerListAddress'])
-            print ("NTP offset : " + ntp_result_json['result']['data']['rows'][x]['alaNtpPeerListOffset'])
-            print("--------------------------------------------------------------------------------")
+        vlan_result=switch_session.get('https://' + ip + '/cli/aos?&cmd=show+vlan', headers=headers)
+        vlan_result_json=vlan_result.json()
+        print("")
+        print("_____________VLAN Table  For "  +  switch  + " ________________________")
+        print(vlan_result_json['result']['output'])
+        print("____________________________________________________________________")
         switch_session.cookies.clear()
         switch_session.close()
 print("")

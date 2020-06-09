@@ -19,6 +19,8 @@ for ov in ov_list:
     password=ov_list[ov]['password']
 
 print("##########        Operation Started.........  #############")
+print("An Example to show how to connect to OV and pull all VLANs in OV")
+
 print("")
 # Defining all API requirements
 ov_session=requests.Session()
@@ -46,6 +48,7 @@ else:
     api_request=requests.Request('GET', api_url + api_domain, headers=headers)
     api_response = ov_session.send(ov_session.prepare_request(api_request), verify=False)
     api_response_json=api_response.json()
+    #print(api_response_json)
     response_code=api_response_json['statusCode']
     if response_code != 200:
             print("")
