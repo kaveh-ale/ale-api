@@ -36,7 +36,7 @@ for switch in switch_list:
     else:
 ##### Pull the vlan table from switch  #####
         headers= {'Accept': 'application/vnd.alcatellucentaos+json'}
-        vlan_id="99"
+        vlan_id="250"
         vlan_result=switch_session.put('https://' + ip + '/cli/aos?&cmd=vlan+'+vlan_id, headers=headers)
         vlan_result_json=vlan_result.json()
         print("")

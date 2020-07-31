@@ -37,7 +37,9 @@ for switch in switch_list:
 ##### Pull the NTP data from switch  #####
         headers= {'Accept': 'application/vnd.alcatellucentaos+json'}
         ntp_result=switch_session.get('https://' + ip + '/mib/alaNtpPeerListTable?mibObject1=alaNtpPeerListAddress&mibObject2=alaNtpPeerListOffset', headers=headers)
+
         ntp_result_json=ntp_result.json()
+        #print(ntp_result_json)
         print("--------------------------------------------------------------------------------")
         for x in ntp_result_json['result']['data']['rows']:
             print("")
